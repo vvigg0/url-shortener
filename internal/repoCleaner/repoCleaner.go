@@ -18,6 +18,7 @@ func New(db *dbpg.DB) *RepoCleaner {
 
 func (c *RepoCleaner) Start(ctx context.Context) error {
 	ticker := time.NewTicker(30 * time.Minute)
+	defer ticker.Stop()
 	for {
 		select {
 		case <-ctx.Done():
