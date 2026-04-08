@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/vvigg0/l3/url-shortener/internal/generator"
 	"github.com/vvigg0/l3/url-shortener/internal/repository"
+	"github.com/vvigg0/l3/url-shortener/pkg/generator"
 	"github.com/wb-go/wbf/zlog"
 )
 
