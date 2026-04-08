@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">URL Shortener</p>
+        <h1>Сокращение ссылок и просмотр аналитики</h1>
+        <p class="hero-text">
+          Создавай короткие ссылки, открывай их и смотри статистику переходов.
+        </p>
+      </div>
+
+      <div class="hero-card">
+        <div class="stat-item">
+          <span class="stat-label">Функция</span>
+          <strong>Создание коротких ссылок</strong>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Функция</span>
+          <strong>Переход по ссылке</strong>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Функция</span>
+          <strong>Просмотр аналитики</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <div class="card-head">
+          <h2>Создать короткую ссылку</h2>
+        </div>
+
+        <form id="shorten-form" class="stack gap-16">
+          <label class="field">
+            <span>Полная ссылка</span>
+            <input id="url-input" name="url" type="url" placeholder="https://example.com/article" required>
+          </label>
+
+          <label class="field">
+            <span>Желаемый short code</span>
+            <input id="custom-code-input" name="custom_code" type="text" placeholder="например, mylink123" maxlength="64">
+          </label>
+
+          <button class="btn primary" type="submit">Сократить ссылку</button>
+        </form>
+
+        <div id="shorten-result" class="result hidden"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Быстрый переход</h2>
+        </div>
+
+        <form id="redirect-form" class="stack gap-16">
+          <label class="field">
+            <span>Короткая ссылка целиком</span>
+            <input id="redirect-link" type="text" placeholder="localhost:8080/s/Ab12Cd34" required>
+          </label>
+          <button class="btn" type="submit">Перейти</button>
+        </form>
+      </section>
+      <section class="card card-wide">
+        <div class="card-head">
+          <h2>Все сокращённые ссылки</h2>
+        </div>
+
+        <div class="inline-actions">
+          <button class="btn primary" id="load-links-btn" type="button">Загрузить ссылки</button>
+        </div>
+
+        <div id="all-links-result" class="table-wrap hidden"></div>
+      </section>
+      <section class="card card-wide">
+        <div class="card-head">
+          <h2>Аналитика</h2>
+        </div>
+
+        <form id="analytics-form" class="analytics-form">
+          <label class="field grow">
+            <span>Short code</span>
+            <input id="analytics-code" type="text" placeholder="введи код" maxlength="64" required>
+          </label>
+
+          <label class="field compact">
+            <span>Режим</span>
+            <div class="custom-select" id="aggregate-select">
+              <button type="button" class="custom-select-trigger" id="aggregate-trigger">
+                <span id="aggregate-trigger-text">Все посещения</span>
+                <span class="custom-select-arrow">▾</span>
+              </button>
+
+              <div class="custom-select-menu hidden" id="aggregate-menu">
+                <button type="button" class="custom-select-option active" data-value="">Все посещения</button>
+                <button type="button" class="custom-select-option" data-value="day">По дням</button>
+                <button type="button" class="custom-select-option" data-value="month">По месяцам</button>
+                <button type="button" class="custom-select-option" data-value="user-agent">По user-agent</button>
+              </div>
+            </div>
+          </label>
+
+          <button class="btn primary analytics-btn" type="submit">Показать аналитику</button>
+        </form>
+
+        <div id="analytics-meta" class="analytics-meta hidden"></div>
+        <div id="analytics-result" class="table-wrap hidden"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

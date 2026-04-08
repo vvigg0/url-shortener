@@ -1,0 +1,68 @@
+name: url-shortener
+services:
+    app:
+      build:
+        context: ../
+        dockerfile: deploy/Dockerfile
+      ports:
+        - "8080:8080"
+      depends_on:
+        shortener_db:
+          condition: service_healthy
+        shortener_redis:
+          condition: service_healthy
+      environment:
+        POSTGRES_HOST: ${POSTGRES_HOST}
+        POSTGRES_PORT: ${POSTGRES_PORT}
+        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        URLS_TTL: ${URLS_TTL}
+        CACHED_URLS_TTL: ${CACHED_URLS_TTL}
+      env_file:
+        - .env
+      networks:
+        - url-shortener-network
+    shortener_db:
+      image: postgres:17
+      container_name: url-shortener-db
+      restart: unless-stopped
+      ports:
+        - "5432:5432"
+      healthcheck:
+        test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+        interval: 5s
+        timeout: 5s
+        retries: 3
+      environment:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DB}
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      networks:
+        - url-shortener-network
+    shortener_redis:
+      image: redis:7.4-alpine
+      container_name: url-shortener-redis
+      restart: unless-stopped
+      ports:
+        - "6379:6379"
+      healthcheck:
+        test: ["CMD", "redis-cli", "ping"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 5s
+      volumes:
+        - redis_data:/data
+      networks:
+        - url-shortener-network
+
+volumes:
+  postgres_data:
+  redis_data:
+networks:
+  url-shortener-network:
+    driver: bridge
