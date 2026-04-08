@@ -33,7 +33,7 @@ func (h *Handler) GetAnalytics(ctx *ginext.Context) {
 		ctx.JSON(getErrorCode(err), ginext.H{"err": err})
 		return
 	}
-	ctx.JSON(http.StatusAccepted, ginext.H{"res": analytics})
+	ctx.JSON(http.StatusOK, ginext.H{"res": analytics})
 }
 
 func (h *Handler) GetAllLinks(ctx *ginext.Context) {
